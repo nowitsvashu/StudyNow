@@ -21,12 +21,12 @@ function Navbar() {
   const ref = useRef(null)
   const [subLinks, setSubLinks] = useState([])
   const [loading, setLoading] = useState(false)
-  const [open,setOpen] = useState(true);
+  const [open, setOpen] = useState(true);
 
   useOnClickOutside(ref, () => setOpen(false))
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       setLoading(true)
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API)
@@ -46,9 +46,8 @@ function Navbar() {
 
   return (
     <div
-      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
-        location.pathname !== "/" ? "bg-richblack-800" : ""
-      } transition-all duration-200`}
+      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${location.pathname !== "/" ? "bg-richblack-800" : ""
+        } transition-all duration-200`}
     >
       <div className="flex w-[96%] md:w-11/12 max-w-maxContent items-center justify-between">
         {/* Logo */}
@@ -64,11 +63,10 @@ function Navbar() {
                 {link.title === "Catalog" ? (
                   <>
                     <div
-                      className={`group relative flex cursor-pointer items-center gap-1 ${
-                        matchRoute("/catalog/:catalogName")
+                      className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName")
                           ? "text-yellow-25"
                           : "text-richblack-25"
-                      }`}
+                        }`}
                     >
                       <p>{link.title}</p>
                       <BsChevronDown />
@@ -76,7 +74,7 @@ function Navbar() {
                         <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                         {loading ? (
                           <p className="text-center">Loading...</p>
-                        ) : subLinks.length ? (
+                        ) : subLinks && subLinks.length > 0 ? ( // Add a null check and length check
                           <>
                             {subLinks
                               ?.filter(
@@ -98,17 +96,17 @@ function Navbar() {
                         ) : (
                           <p className="text-center">No Courses Found</p>
                         )}
+
                       </div>
                     </div>
                   </>
                 ) : (
                   <Link to={link?.path}>
                     <p
-                      className={`${
-                        matchRoute(link?.path)
+                      className={`${matchRoute(link?.path)
                           ? "text-yellow-25 hidden md:block"
                           : "text-richblack-25 hidden md:block"
-                      }`}
+                        }`}
                     >
                       {link.title}
                     </p>
@@ -118,7 +116,7 @@ function Navbar() {
             ))}
           </ul>
         </nav>
-     
+
         {/* Login / Signup / Dashboard */}
         <div className="items-center gap-x-2 flex">
           {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
@@ -150,40 +148,39 @@ function Navbar() {
 
 
         <button className="relative mr-1 md:hidden" onClick={() => setOpen(true)}>
-      <div className="flex items-center gap-x-1">
-        <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-      </div>
-      {open && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 w-[120px] overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800 "
-          ref={ref}
-        >
+          <div className="flex items-center gap-x-1">
+            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+          </div>
+          {open && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 w-[120px] overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800 "
+              ref={ref}
+            >
 
-{NavbarLinks.map((link, index) => (
-              <li key={index} className="list-none">
-                {link.title === "Catalog" ? (
-                  <>
-                  </>
-                ) : (
-                  <Link to={link?.path}>
-                    <p
-                      className={`${
-                        matchRoute(link?.path)
-                          ? "text-yellow-25 py-2"
-                          : "text-richblack-25 py-2"
-                      }`}
-                    >
-                      {link.title}
-                    </p>
-                  </Link>
-                )}
-              </li>
-            ))}
-          
-        </div>
-      )}
-    </button>
+              {NavbarLinks.map((link, index) => (
+                <li key={index} className="list-none">
+                  {link.title === "Catalog" ? (
+                    <>
+                    </>
+                  ) : (
+                    <Link to={link?.path}>
+                      <p
+                        className={`${matchRoute(link?.path)
+                            ? "text-yellow-25 py-2"
+                            : "text-richblack-25 py-2"
+                          }`}
+                      >
+                        {link.title}
+                      </p>
+                    </Link>
+                  )}
+                </li>
+              ))}
+
+            </div>
+          )}
+        </button>
       </div>
     </div>
   )
